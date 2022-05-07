@@ -1,0 +1,40 @@
+use my_first_db
+
+db.createCollection('students')
+
+db.students.insertMany([{name: "Tony", home_state:"California", lucky_number: 4, birthday: {month: 2, day: 15, year: 1990}}, {name: "Bob", home_state:"Washington", lucky_number: 7, birthday: {month: 4, day: 1, year: 1995}}, {name: "Zack", home_state:"New York", lucky_number: 34, birthday: {month: 12, day: 14, year: 1997}}, {name: "Yugi", home_state: "California", lucky_number: 55, birthday: {month: 6, day:24, year:1997 }}])
+db.students.insertOne({lucky_number: 25, name: "Homer", birthday: {month: 10, day: 29, year: 2000}, home_state: "New York"})
+
+db.students.find({$or: [{home_state: 'California'}, {home_state:'Washington'}]})
+
+db.students.find({lucky_number: {$gt:3}})
+
+db.students.find({lucky_number: {$lte:10}})
+
+db.students.find({$and: [{lucky_number: {$gt:1}}, {lucky_number: {$lte: 9}} ]})
+
+db.students.updateMany({}, {$addToSet: {interest: {$each: ['coding', 'brunch', 'MongoDB']}}})
+
+db.students.updateOne({name:"Homer"}, {$push: {interest: 'Eating'}})
+db.students.updateOne({name:"Yugi"}, {$push: {interest: "Gaming"}})
+db.students.updateMany({$or: [{name: "Tony"},{name: "Zack"}]}, {$push: {interest: 'Skating'}})
+
+db.students.updateOne({name:"Homer"}, {$push: {interest: "taxes"}})
+
+db.students.updateOne({name:"Homer"}, {$pull: {interest: "taxes"}})
+
+db.students.deleteMany({home_state: "California"})
+
+db.students.deleteOne({name:"Zack"})
+
+db.students.deleteOne({lucky_number: {$gt: 5}})
+
+db.students.updateOne({name:'Homer'}, {$set: {number_of_belts: 0}})
+
+db.students.updateMany({home_state: "Washington"}, {$inc: {number_of_belts: 1}})
+
+db.students.updateMany({}, {$rename: {'number_of_belts': 'belts_earned'}})
+
+db.students.updateMany({}, [{$unset: ['lucky_number']}])
+
+db.students.updateMany({}, {$set: {updated_on: new Date()}})
